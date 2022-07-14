@@ -1,5 +1,6 @@
-package com.example.musinsa.network
+package com.example.musinsa.di
 
+import com.example.musinsa.network.ApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

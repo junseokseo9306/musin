@@ -53,6 +53,7 @@ dependencies {
     //viewModel
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.0'
 
     // coroutine
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
