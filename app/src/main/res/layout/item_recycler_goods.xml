@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.musinsa.model.Item.ItemType.Contents.Goods" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_goods_thumbnail"
+            android:layout_width="150dp"
+            android:layout_height="180dp"
+            android:contentDescription="@string/goods_image"
+            android:padding="5dp"
+            app:imgUrl="@{item.thumbnailURL}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/tv_goods_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:text="@{item.brandName}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_goods_thumbnail"
+            tools:text="캐치볼"
+            tools:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_goods_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            app:price="@{item.price}"
+            tools:text="61,600원" />
+
+        <TextView
+            android:id="@+id/tv_goods_sale_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:colorText="@{item.saleRate}"
+            app:layout_constraintEnd_toStartOf="@id/tv_goods_coupon"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            tools:text="24%" />
+
+        <TextView
+            android:id="@+id/tv_goods_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/icon_coupon"
+            android:text="@string/goods_coupon"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            app:visible="@{item.hasCoupon}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
