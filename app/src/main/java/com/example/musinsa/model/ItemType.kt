@@ -2,7 +2,6 @@ package com.example.musinsa.model
 
 import com.example.musinsa.dto.ItemListDTO
 
-
 data class Item(
     val header: ItemType.Header?,
     val contents: ItemType.Contents,
@@ -15,7 +14,7 @@ data class Item(
             val title: String,
             val iconURL: String?,
             val linkURL: String?,
-        ) {
+        ) : ItemType() {
             companion object {
                 fun of(item: ItemListDTO.ItemDTO.Header?) = Header(
                     title = item?.title.orEmpty(),
@@ -37,7 +36,7 @@ data class Item(
                 val title: String?,
                 val description: String?,
                 val keyword: String?,
-            ) {
+            ) : ItemType() {
                 companion object {
                     fun of(item: ItemListDTO.ItemDTO.Contents.Banner?) = Banner(
                         linkUrl = requireNotNull(item?.linkURL),
@@ -57,7 +56,7 @@ data class Item(
                 val price: Int,
                 val saleRate: Int,
                 val hasCoupon: Boolean,
-            ) {
+            ) : ItemType() {
                 companion object {
                     fun of(type: String, item: ItemListDTO.ItemDTO.Contents.Good?) = Goods(
                         layoutType = type,
@@ -74,7 +73,7 @@ data class Item(
             data class Style(
                 val linkURL: String,
                 val thumbnailURL: String,
-            ) {
+            ) : ItemType() {
                 companion object {
                     fun of(item: ItemListDTO.ItemDTO.Contents.Style?) = Style(
                         linkURL = requireNotNull(item?.linkURL),
@@ -95,7 +94,7 @@ data class Item(
             val type: String,
             val title: String?,
             val iconURL: String?,
-        ) {
+        ) : ItemType() {
             companion object {
                 fun of(item: ItemListDTO.ItemDTO.Footer?) = Footer(
                     type = item?.type.orEmpty(),

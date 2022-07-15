@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">musinsa</string>
+    <string name="goods_image">상품이미지</string>
+    <string name="currency">%s원</string>
+    <string name="goods_coupon">쿠폰</string>
+    <string name="header_title_icon">타이틀아이콘</string>
+    <string name="header_all">전체</string>
+    <string name="new_goods">새로운추천</string>
+    <string name="see_more_goods">더보기</string>
+    <string name="banner_area">배너 광고 영역</string>
 </resources>
