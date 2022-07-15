@@ -20,10 +20,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var bannerAdapter: ItemListViewPagerAdapter
+    private lateinit var bannerAdapter: CustomRecyclerViewAdapter
     private lateinit var gridAdapter: CustomRecyclerViewAdapter
     private lateinit var scrollAdapter: CustomRecyclerViewAdapter
+    private lateinit var styleAdapter: CustomRecyclerViewAdapter
     private val viewModel: HomeViewModel by viewModels()
+    private val gridManager: GridLayoutManager by lazy {
+        GridLayoutManager(context, 3)
+    }
+    private val styleManager: GridLayoutManager by lazy {
+        GridLayoutManager(context, 2)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,29 +44,51 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bannerAdapter = ItemListViewPagerAdapter()
+        bannerAdapter = CustomRecyclerViewAdapter()
         gridAdapter = CustomRecyclerViewAdapter()
         scrollAdapter = CustomRecyclerViewAdapter()
+        styleAdapter = CustomRecyclerViewAdapter()
 
-        val manager = GridLayoutManager(context, 3)
-        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (gridAdapter.getItemViewType(position)) {
-                    CustomRecyclerViewAdapter.HEADER -> 3
-                    CustomRecyclerViewAdapter.CONTENTS -> 1
-                    CustomRecyclerViewAdapter.FOOTER -> 3
-                    else -> 0
+        setBindingAdapters()
+        observeData()
+    }
+
+    private fun setBindingAdapters() {
+        with(binding) {
+            vpBanner.adapter = bannerAdapter
+
+            gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (gridAdapter.getItemViewType(position)) {
+                        CustomRecyclerViewAdapter.HEADER -> 3
+                        CustomRecyclerViewAdapter.CONTENTS_GOODS -> 1
+                        CustomRecyclerViewAdapter.FOOTER -> 3
+                        else -> 0
+                    }
                 }
             }
-        }
 
-        binding.rvGridGoodsArea.layoutManager = manager
-        binding.vpBanner.adapter = bannerAdapter
-        binding.rvGridGoodsArea.adapter = gridAdapter
-        binding.rvScrollGoodsArea.adapter = scrollAdapter
-        binding.rvScrollGoodsArea.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        observeData()
+            styleManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (styleAdapter.getItemViewType(position)) {
+                        CustomRecyclerViewAdapter.HEADER -> 2
+                        CustomRecyclerViewAdapter.CONTENTS_STYLE -> 1
+                        CustomRecyclerViewAdapter.FOOTER -> 2
+                        else -> 0
+                    }
+                }
+            }
+
+            rvGridGoodsArea.layoutManager = gridManager
+            rvGridGoodsArea.adapter = gridAdapter
+
+            rvScrollGoodsArea.adapter = scrollAdapter
+            rvScrollGoodsArea.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            rvStyle.adapter = styleAdapter
+            rvStyle.layoutManager = styleManager
+        }
     }
 
     private fun observeData() {
@@ -78,6 +107,9 @@ class HomeFragment : Fragment() {
             }
             scrollGoodsFooter.observe(viewLifecycleOwner) {
                 binding.isRefresh = true
+            }
+            styleItem.observe(viewLifecycleOwner) {
+                styleAdapter.submitList(it)
             }
         }
     }

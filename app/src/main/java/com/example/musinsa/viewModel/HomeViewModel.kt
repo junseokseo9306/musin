@@ -1,5 +1,6 @@
 package com.example.musinsa.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,49 +38,63 @@ class HomeViewModel @Inject constructor(
         loadData()
     }
 
-    //중복되는 부분 함수 분리 필요
     private fun loadData() {
         viewModelScope.launch {
             val data = repository.getItemList()
             data.forEach { item ->
-                val itemList = mutableListOf<Item.ItemType>()
-                when (item.type) {
-                    Item.ItemType.Contents.TYPE_BANNER -> {
-                        item.contents.banners?.forEach { banner ->
-                            itemList.add(banner)
+                addDataToLiveData(
+                    item.type,
+                    item.header,
+                    item.contents,
+                    item.footer
+                )
+            }
+        }
+    }
+
+    private fun addDataToLiveData(
+        type: String,
+        header: Item.ItemType.Header?,
+        contents: Item.ItemType.Contents?,
+        footer: Item.ItemType.Footer?,
+    ) {
+        val itemList = mutableListOf<Item.ItemType>()
+        when (type) {
+            Item.ItemType.Contents.TYPE_BANNER -> {
+                contents?.banners?.forEach { banner ->
+                    itemList.add(banner)
+                }
+                _bannerItem.value = itemList
+            }
+            Item.ItemType.Contents.TYPE_GOODS_GRID -> {
+                header?.let { itemList.add(it) }
+                contents?.goods?.forEach { goods ->
+                    itemList.add(goods)
+                }
+                footer?.let { itemList.add(it) }
+                _gridGoodsItem.value = itemList
+            }
+            Item.ItemType.Contents.TYPE_GOODS_SCROLL -> {
+                contents?.goods?.forEach { goods ->
+                    itemList.add(goods)
+                }
+                _scrollGoodsItem.value = itemList
+                _scrollGoodsHeader.value = header
+                _scrollGoodsFooter.value = footer
+            }
+            Item.ItemType.Contents.TYPE_STYLE -> {
+                header?.let { itemList.add(it) }
+                run loop@{
+                    contents?.styles?.forEachIndexed { index, style ->
+                        if (index == 4) {
+                            return@loop
                         }
-                        _bannerItem.value = itemList
-                    }
-                    Item.ItemType.Contents.TYPE_GOODS_GRID -> {
-//                        val tempList = mutableListOf<Item.ItemType.Contents.Goods>()
-//                        item.contents.goods?.forEach { goods ->
-//                            tempList.add(goods)
-//                        }
-//                        _gridGoodsItem.value = tempList
-                        item.header?.let { itemList.add(it) }
-                        item.contents.goods?.forEach { goods ->
-                            itemList.add(goods)
-                        }
-                        _gridGoodsItem.value = itemList
-                        item.footer?.let { itemList.add(it) }
-                    }
-                    Item.ItemType.Contents.TYPE_GOODS_SCROLL -> {
-                        item.contents.goods?.forEach { goods ->
-                            itemList.add(goods)
-                        }
-                        _scrollGoodsItem.value = itemList
-                        _scrollGoodsHeader.value = item.header
-                        _scrollGoodsFooter.value = item.footer
-                    }
-                    Item.ItemType.Contents.TYPE_STYLE -> {
-                        item.header?.let { itemList.add(it) }
-                        item.contents.styles?.forEach { style ->
-                            itemList.add(style)
-                        }
-                        _styleItem.value = itemList
-                        item.footer?.let { itemList.add(it) }
+                        itemList.add(style)
                     }
                 }
+                footer?.let { itemList.add(it) }
+                Log.d("ViewModel", "style size: ${itemList.size.toString()}")
+                _styleItem.value = itemList
             }
         }
     }

@@ -53,7 +53,7 @@
                 android:id="@+id/scroll_rv_header"
                 layout="@layout/item_recycler_header"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="16dp"
                 app:header="@{header}"
                 app:isVisible="@{isVisible}"
@@ -83,6 +83,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_scroll_goods_area" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_style"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scroll_rv_footer"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_recycler_goods" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
