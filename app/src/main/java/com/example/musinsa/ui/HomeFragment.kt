@@ -25,10 +25,13 @@ class HomeFragment : Fragment() {
     private lateinit var styleAdapter: CustomRecyclerViewAdapter
     private val viewModel: HomeViewModel by viewModels()
     private val gridManager: GridLayoutManager by lazy {
-        GridLayoutManager(context, 3)
+        GridLayoutManager(context, GRID_COUNT)
     }
     private val styleManager: GridLayoutManager by lazy {
-        GridLayoutManager(context, 2)
+        GridLayoutManager(context, STYLE_COUNT)
+    }
+    private val scrollManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
     override fun onCreateView(
@@ -54,15 +57,13 @@ class HomeFragment : Fragment() {
 
     private fun setBindingAdapters() {
         with(binding) {
-            vpBanner.adapter = bannerAdapter
-
             gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (gridAdapter.getItemViewType(position)) {
-                        CustomRecyclerViewAdapter.HEADER -> 3
-                        CustomRecyclerViewAdapter.CONTENTS_GOODS -> 1
-                        CustomRecyclerViewAdapter.FOOTER -> 3
-                        else -> 0
+                        CustomRecyclerViewAdapter.HEADER -> GRID_COUNT
+                        CustomRecyclerViewAdapter.CONTENTS_GOODS -> ITEM_COUNT
+                        CustomRecyclerViewAdapter.FOOTER -> GRID_COUNT
+                        else -> NONE
                     }
                 }
             }
@@ -70,21 +71,19 @@ class HomeFragment : Fragment() {
             styleManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (styleAdapter.getItemViewType(position)) {
-                        CustomRecyclerViewAdapter.HEADER -> 2
-                        CustomRecyclerViewAdapter.CONTENTS_STYLE -> 1
-                        CustomRecyclerViewAdapter.FOOTER -> 2
-                        else -> 0
+                        CustomRecyclerViewAdapter.HEADER -> STYLE_COUNT
+                        CustomRecyclerViewAdapter.CONTENTS_STYLE -> ITEM_COUNT
+                        CustomRecyclerViewAdapter.FOOTER -> STYLE_COUNT
+                        else -> NONE
                     }
                 }
             }
 
-            rvGridGoodsArea.layoutManager = gridManager
+            vpBanner.adapter = bannerAdapter
             rvGridGoodsArea.adapter = gridAdapter
-
+            rvGridGoodsArea.layoutManager = gridManager
             rvScrollGoodsArea.adapter = scrollAdapter
-            rvScrollGoodsArea.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
+            rvScrollGoodsArea.layoutManager = scrollManager
             rvStyle.adapter = styleAdapter
             rvStyle.layoutManager = styleManager
         }
@@ -114,6 +113,10 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
+        private const val GRID_COUNT = 3
+        private const val STYLE_COUNT = 2
+        private const val ITEM_COUNT = 1
+        private const val NONE = 0
         fun newInstance() = HomeFragment()
     }
 }
