@@ -53,18 +53,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        val linearManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
         binding.rvGridGoodsArea.layoutManager = manager
         binding.vpBanner.adapter = bannerAdapter
         binding.rvGridGoodsArea.adapter = gridAdapter
         binding.rvScrollGoodsArea.adapter = scrollAdapter
         binding.rvScrollGoodsArea.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        observingData()
+        observeData()
     }
 
-    private fun observingData() {
+    private fun observeData() {
         with(viewModel) {
             bannerItem.observe(viewLifecycleOwner) {
                 bannerAdapter.submitList(it)
@@ -74,6 +72,12 @@ class HomeFragment : Fragment() {
             }
             scrollGoodsItem.observe(viewLifecycleOwner) {
                 scrollAdapter.submitList(it)
+            }
+            scrollGoodsHeader.observe(viewLifecycleOwner) {
+                binding.header = it
+            }
+            scrollGoodsFooter.observe(viewLifecycleOwner) {
+                binding.isRefresh = true
             }
         }
     }
