@@ -18,7 +18,7 @@
             type="Boolean" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -40,8 +40,8 @@
                 android:id="@+id/vp_banner"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_app_title_icon" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -50,6 +50,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
                 android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -99,6 +100,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
                 android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/scroll_rv_footer"
@@ -106,5 +108,5 @@
                 tools:listitem="@layout/item_recycler_goods" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

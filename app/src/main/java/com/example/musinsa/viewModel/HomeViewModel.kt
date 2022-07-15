@@ -86,7 +86,7 @@ class HomeViewModel @Inject constructor(
                 header?.let { itemList.add(it) }
                 run loop@{
                     contents?.styles?.forEachIndexed { index, style ->
-                        if (index == 4) {
+                        if (index == 8) {
                             return@loop
                         }
                         itemList.add(style)
