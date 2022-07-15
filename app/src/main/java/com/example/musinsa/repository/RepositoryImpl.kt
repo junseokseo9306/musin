@@ -9,5 +9,6 @@ import javax.inject.Singleton
 class RepositoryImpl @Inject constructor(
     private val dataSource: DataSource,
 ) : Repository {
+
     override suspend fun getItemList() = dataSource.getItemList().toItemList()
 }

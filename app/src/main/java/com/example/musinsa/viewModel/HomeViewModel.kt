@@ -1,6 +1,5 @@
 package com.example.musinsa.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,36 +15,63 @@ class HomeViewModel @Inject constructor(
     private val repository: Repository,
 ) : ViewModel() {
 
-    private val _bannerItem = MutableLiveData<Item>()
-    val bannerItem: LiveData<Item> = _bannerItem
+    private val _bannerItem = MutableLiveData<List<Item.ItemType>>()
+    val bannerItem: LiveData<List<Item.ItemType>> = _bannerItem
 
-    private val _gridGoodsItem = MutableLiveData<Item>()
-    val gridGoodsItem: LiveData<Item> = _gridGoodsItem
+    private val _gridGoodsItem = MutableLiveData<List<Item.ItemType>>()
+    val gridGoodsItem: LiveData<List<Item.ItemType>> = _gridGoodsItem
 
-    private val _scrollGoodsItem = MutableLiveData<Item>()
-    val scrollGoodsItem: LiveData<Item> = _scrollGoodsItem
+    private val _scrollGoodsItem = MutableLiveData<List<Item.ItemType>>()
+    val scrollGoodsItem: LiveData<List<Item.ItemType>> = _scrollGoodsItem
 
-    private val _styleItem = MutableLiveData<Item>()
-    val styleItem: LiveData<Item> = _styleItem
+    private val _styleItem = MutableLiveData<List<Item.ItemType>>()
+    val styleItem: LiveData<List<Item.ItemType>> = _styleItem
 
-    fun loadData() {
+    init {
+        loadData()
+    }
+
+    //중복되는 부분 함수 분리 필요
+    private fun loadData() {
         viewModelScope.launch {
-            val list = repository.getItemList()
-            list.forEach { item ->
+            val data = repository.getItemList()
+            data.forEach { item ->
+                val itemList = mutableListOf<Item.ItemType>()
                 when (item.type) {
                     Item.ItemType.Contents.TYPE_BANNER -> {
-                        _bannerItem.value = item
-                        Log.d("ViewModel", item.contents.banners?.size.toString())
+                        item.contents.banners?.forEach { banner ->
+                            itemList.add(banner)
+                        }
+                        _bannerItem.value = itemList
                     }
                     Item.ItemType.Contents.TYPE_GOODS_GRID -> {
-                        _gridGoodsItem.value = item
-                        Log.d("ViewModel", item.contents.goods?.size.toString())
+//                        val tempList = mutableListOf<Item.ItemType.Contents.Goods>()
+//                        item.contents.goods?.forEach { goods ->
+//                            tempList.add(goods)
+//                        }
+//                        _gridGoodsItem.value = tempList
+                        item.header?.let { itemList.add(it) }
+                        item.contents.goods?.forEach { goods ->
+                            itemList.add(goods)
+                        }
+                        _gridGoodsItem.value = itemList
+                        item.footer?.let { itemList.add(it) }
                     }
                     Item.ItemType.Contents.TYPE_GOODS_SCROLL -> {
-                        _scrollGoodsItem.value = item
+                        item.header?.let { itemList.add(it) }
+                        item.contents.goods?.forEach { goods ->
+                            itemList.add(goods)
+                        }
+                        item.footer?.let { itemList.add(it) }
+                        _scrollGoodsItem.value = itemList
                     }
                     Item.ItemType.Contents.TYPE_STYLE -> {
-                        _styleItem.value = item
+                        item.header?.let { itemList.add(it) }
+                        item.contents.styles?.forEach { style ->
+                            itemList.add(style)
+                        }
+                        _styleItem.value = itemList
+                        item.footer?.let { itemList.add(it) }
                     }
                 }
             }
