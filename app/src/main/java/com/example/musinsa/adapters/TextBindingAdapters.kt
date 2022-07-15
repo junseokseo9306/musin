@@ -2,29 +2,16 @@ package com.example.musinsa.adapters
 
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.buildSpannedString
 import androidx.databinding.BindingAdapter
-import coil.load
 import com.example.musinsa.R
 import java.text.DecimalFormat
 
 private val decimalFormat = DecimalFormat("#,###")
 
-@BindingAdapter("imgUrl")
-fun setImageFromUrl(view: ImageView, imageUrl: String?) {
-    imageUrl?.let { url ->
-        view.load(url) {
-            crossfade(200)
-            error(R.drawable.img_not_found)
-        }
-    }
-}
-
 @BindingAdapter("title")
-fun setTitle(view: TextView, title: String) {
+fun setTitleLineSeparation(view: TextView, title: String) {
     val blank = ' '
     val nextLine = '\n'
     val maxLength = 6
@@ -60,13 +47,4 @@ fun setColorText(view: TextView, percentage: Int) {
         )
     }
     view.text = spannableString
-}
-
-@BindingAdapter("visible")
-fun setVisible(view: View, isClicked: Boolean?) {
-    view.visibility = if (isClicked == true) {
-        View.VISIBLE
-    } else {
-        View.GONE
-    }
 }

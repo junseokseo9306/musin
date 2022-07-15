@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musinsa.R
-import com.example.musinsa.adapters.ItemListViewPagerAdapter
 import com.example.musinsa.adapters.CustomRecyclerViewAdapter
 import com.example.musinsa.databinding.FragmentHomeBinding
 import com.example.musinsa.viewModel.HomeViewModel

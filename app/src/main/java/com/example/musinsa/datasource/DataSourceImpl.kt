@@ -8,5 +8,6 @@ import javax.inject.Singleton
 class DataSourceImpl @Inject constructor(
     private val apiClient: ApiClient,
 ) : DataSource {
+
     override suspend fun getItemList() = apiClient.getItemList()
 }
