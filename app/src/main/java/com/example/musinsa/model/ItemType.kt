@@ -12,8 +12,8 @@ data class Item(
 
         data class Header(
             val title: String,
-            val iconURL: String?,
-            val linkURL: String?,
+            val iconURL: String,
+            val linkURL: String,
         ) : ItemType() {
             companion object {
                 fun of(item: ItemListDTO.ItemDTO.Header?) = Header(
@@ -25,9 +25,9 @@ data class Item(
         }
 
         data class Contents(
-            val banners: List<Banner>?,
-            val goods: List<Goods>?,
-            val styles: List<Style>?,
+            val banners: List<Banner>,
+            val goods: List<Goods>,
+            val styles: List<Style>,
             val type: String,
         ) {
             data class Banner(
@@ -92,8 +92,8 @@ data class Item(
 
         data class Footer(
             val type: String,
-            val title: String?,
-            val iconURL: String?,
+            val title: String,
+            val iconURL: String,
         ) : ItemType() {
             companion object {
                 fun of(item: ItemListDTO.ItemDTO.Footer?) = Footer(
