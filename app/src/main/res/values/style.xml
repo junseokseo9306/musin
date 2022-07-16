@@ -22,7 +22,6 @@
     <style name="GoodsTextStyle.PriceBold">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="GoodsTextStyle.PriceBold.Black">

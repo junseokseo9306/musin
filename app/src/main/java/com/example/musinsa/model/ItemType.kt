@@ -23,7 +23,7 @@ data class Item(
                     linkURL = item?.linkURL.orEmpty(),
                 )
 
-                private const val INITIAL_VALUE = ""
+                const val INITIAL_VALUE = ""
                 val INITIAL_HEADER = Header(
                     title = INITIAL_VALUE,
                     iconURL = INITIAL_VALUE,
@@ -110,7 +110,7 @@ data class Item(
                     iconURL = item?.iconURL.orEmpty()
                 )
 
-                private const val INITIAL_VALUE = ""
+                const val INITIAL_VALUE = ""
                 val INITIAL_HEADER = Footer(
                     type = INITIAL_VALUE,
                     title = INITIAL_VALUE,

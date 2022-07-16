@@ -15,6 +15,7 @@ import com.example.musinsa.common.CustomSpanCount
 import com.example.musinsa.databinding.FragmentHomeBinding
 import com.example.musinsa.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import com.example.musinsa.model.Item.ItemType
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {

@@ -8,52 +8,55 @@
         <variable
             name="header"
             type="com.example.musinsa.model.Item.ItemType.Header" />
-
-        <variable
-            name="isVisible"
-            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="80dp">
 
         <ImageView
             android:id="@+id/iv_header_icon"
             android:layout_width="22dp"
             android:layout_height="22dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/header_title_icon"
             app:imgUrl="@{header.iconURL}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_header_title"
-            app:visible="@{isVisible}" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{!header.linkURL.empty}" />
 
         <TextView
             android:id="@+id/tv_header_title"
+            style="@style/GoodsTextStyle.PriceBold.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="16dp"
-            android:text="@{header.title}"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:headerTitle="@{header.title}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="타이틀" />
 
         <TextView
             android:id="@+id/tv_header_all"
+            style="@style/GoodsTextStyle.PriceBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/header_all"
-            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:visible="@{isVisible}" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{!header.linkURL.empty}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
