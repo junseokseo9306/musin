@@ -8,8 +8,6 @@ import androidx.databinding.BindingAdapter
 import com.example.musinsa.R
 import java.text.DecimalFormat
 
-private val decimalFormat = DecimalFormat("#,###")
-
 @BindingAdapter("title")
 fun setTitleLineSeparation(view: TextView, title: String) {
     val blank = ' '
@@ -30,6 +28,7 @@ fun setTitleLineSeparation(view: TextView, title: String) {
 
 @BindingAdapter("price")
 fun setPriceText(view: TextView, price: Int) {
+    val decimalFormat = DecimalFormat("#,###")
     view.text = view.context.getString(R.string.currency, decimalFormat.format(price))
 }
 

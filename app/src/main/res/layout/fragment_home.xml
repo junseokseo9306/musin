@@ -33,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vp_banner"
+                android:id="@+id/vp_banner_area"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vp_banner"
+                app:layout_constraintTop_toBottomOf="@id/vp_banner_area"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_recycler_goods" />
 
@@ -77,7 +77,7 @@
                 tools:listitem="@layout/item_recycler_goods" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_style"
+                android:id="@+id/rv_style_area"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:nestedScrollingEnabled="false"

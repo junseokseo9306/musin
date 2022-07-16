@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
     private val gridManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, GRID_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
-            getItemType = { Int -> gridAdapter.getItemViewType(Int) },
+            getItemType = { index -> gridAdapter.getItemViewType(index) },
             spanCount = GRID_COUNT
         )
         manager
@@ -38,8 +38,9 @@ class HomeFragment : Fragment() {
     private val styleManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, STYLE_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
-            getItemType = { Int -> styleAdapter.getItemViewType(Int) },
-            spanCount = STYLE_COUNT)
+            getItemType = { index -> styleAdapter.getItemViewType(index) },
+            spanCount = STYLE_COUNT
+        )
         manager
     }
 
@@ -70,13 +71,13 @@ class HomeFragment : Fragment() {
 
     private fun setBindingAdapters() {
         with(binding) {
-            vpBanner.adapter = bannerAdapter
+            vpBannerArea.adapter = bannerAdapter
             rvGridGoodsArea.adapter = gridAdapter
             rvScrollGoodsArea.adapter = scrollAdapter
-            rvStyle.adapter = styleAdapter
+            rvStyleArea.adapter = styleAdapter
             rvScrollGoodsArea.layoutManager = scrollManager
             rvGridGoodsArea.layoutManager = gridManager
-            rvStyle.layoutManager = styleManager
+            rvStyleArea.layoutManager = styleManager
         }
     }
 
