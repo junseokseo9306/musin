@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.example.musinsa.R
 import com.example.musinsa.adapters.CustomRecyclerViewAdapter
 import com.example.musinsa.common.CustomSpanCount
+import com.example.musinsa.common.CustomViewPagerCallback
 import com.example.musinsa.databinding.FragmentHomeBinding
 import com.example.musinsa.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,30 +24,39 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+
     private val bannerAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
-            { url -> changeViewToChromeTab(url) }
+            launchBrowser = { url -> changeViewToChromeTab(url) },
+            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
+            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) }
         )
     }
+
     private val gridAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
-            { url -> changeViewToChromeTab(url) }
+            launchBrowser = { url -> changeViewToChromeTab(url) },
+            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
+            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) }
         )
     }
+
     private val scrollAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
-            { url -> changeViewToChromeTab(url) }
+            launchBrowser = { url -> changeViewToChromeTab(url) },
+            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
+            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) }
         )
     }
+
     private val styleAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
-            { url -> changeViewToChromeTab(url) }
+            launchBrowser = { url -> changeViewToChromeTab(url) },
+            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
+            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) }
         )
     }
+
     private val gridManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, GRID_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
@@ -56,6 +65,7 @@ class HomeFragment : Fragment() {
         )
         manager
     }
+
     private val styleManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, STYLE_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
@@ -64,8 +74,19 @@ class HomeFragment : Fragment() {
         )
         manager
     }
+
     private val scrollManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        LinearLayoutManager(
+            context,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+    }
+
+    private val customViewPagerCallback: CustomViewPagerCallback by lazy {
+        CustomViewPagerCallback { index ->
+            viewModel.changeIndicator(index)
+        }
     }
 
     override fun onCreateView(
@@ -125,13 +146,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeBannerIndicator() {
-        binding.vpBannerArea.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                viewModel.changeIndicator(position)
-            }
-        })
+        binding.vpBannerArea.registerOnPageChangeCallback(
+            customViewPagerCallback
+        )
     }
 
     private fun changeViewToChromeTab(url: String) {

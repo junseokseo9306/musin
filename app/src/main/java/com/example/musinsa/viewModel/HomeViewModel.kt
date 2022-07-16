@@ -59,50 +59,30 @@ class HomeViewModel @Inject constructor(
         contents: ItemType.Contents,
         footer: ItemType.Footer,
     ) {
+        val itemList = makeItemTypeList(
+            type,
+            header,
+            contents,
+            footer
+        )
+        val uiDataList = makeUiItemList(
+            type,
+            itemList
+        )
         when (type) {
             ItemType.Contents.TYPE_BANNER -> {
-                _bannerItem.value = makeItemTypeList(
-                    type,
-                    header,
-                    contents,
-                    footer
-                )
+                _bannerItem.value = itemList
             }
             ItemType.Contents.TYPE_GOODS_GRID -> {
-                val dataList = makeItemTypeList(
-                    type,
-                    header,
-                    contents,
-                    footer
-                )
-                val uiDataList = makeUIDataList(
-                    type,
-                    dataList
-                )
-                _gridGoodsItem = dataList.toMutableList()
+                _gridGoodsItem = itemList.toMutableList()
                 _gridGoodsUiItemList.value = uiDataList
             }
             ItemType.Contents.TYPE_GOODS_SCROLL -> {
-                _scrollGoodsItem.value = makeItemTypeList(
-                    type,
-                    header,
-                    contents,
-                    footer
-                )
+                _scrollGoodsItem.value = itemList
                 _scrollGoodsHeader.value = header
             }
             ItemType.Contents.TYPE_STYLE -> {
-                val dataList = makeItemTypeList(
-                    type,
-                    header,
-                    contents,
-                    footer
-                )
-                val uiDataList = makeUIDataList(
-                    type,
-                    dataList
-                )
-                _styleItem = dataList.toMutableList()
+                _styleItem = itemList.toMutableList()
                 _styleUiItemList.value = uiDataList
             }
         }
@@ -145,73 +125,67 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun makeUIDataList(
+    private fun makeUiItemList(
         type: String,
         dataList: List<ItemType>,
     ): List<ItemType> {
-        return when (type) {
+        val uiDataList = when (type) {
             ItemType.Contents.TYPE_GOODS_GRID -> {
-                val uiDataList = dataList.slice(INITIAL_COUNT..INITIAL_GRID_COUNT).toMutableList()
-                val footer = dataList[dataList.size - 1]
-                uiDataList.add(footer)
-                uiDataList
+                dataList.slice(INITIAL_COUNT..INITIAL_GRID_COUNT).toMutableList()
             }
-            else -> {
-                val uiDataList = dataList.slice(INITIAL_COUNT..INITIAL_STYLE_COUNT).toMutableList()
-                val footer = dataList[dataList.size - 1]
-                uiDataList.add(footer)
-                uiDataList
+            ItemType.Contents.TYPE_STYLE -> {
+                dataList.slice(INITIAL_COUNT..INITIAL_STYLE_COUNT).toMutableList()
+            }
+            else -> return dataList
+        }
+        val footer = dataList[dataList.size - 1]
+        uiDataList.add(footer)
+        return uiDataList
+    }
+
+    fun expandUiItemList(
+        type: String,
+        spanCount: Int,
+    ) {
+        when (type) {
+            ItemType.Contents.TYPE_GOODS_GRID -> {
+                makeExpandItemList(
+                    _gridGoodsItem,
+                    _gridGoodsUiItemList,
+                    spanCount
+                )
+            }
+            ItemType.Contents.TYPE_STYLE -> {
+                makeExpandItemList(
+                    _styleItem,
+                    _styleUiItemList,
+                    spanCount
+                )
             }
         }
     }
 
-    fun expandUiData(
-        type: String,
+    private fun makeExpandItemList(
+        dataList: MutableList<ItemType>,
+        uiDataList: MutableLiveData<List<ItemType>>,
         spanCount: Int,
     ) {
+        if (dataList.size == uiDataList.value?.size) return
         val tempList = mutableListOf<ItemType>()
-        when (type) {
-            ItemType.Contents.TYPE_GOODS_GRID -> {
-                if (_gridGoodsItem.size == _gridGoodsUiItemList.value?.size) {
-                    return
-                }
-                val startIndex = _gridGoodsUiItemList.value?.size ?: INITIAL_COUNT
-                val lastIndex = _gridGoodsItem.size
-                val footer = _gridGoodsItem[lastIndex - 1]
-
-                val stopIndex = if (startIndex + spanCount >= lastIndex) {
-                    lastIndex
-                } else {
-                    startIndex + spanCount
-                }
-
-                for (index in 0 until stopIndex - 1) {
-                    tempList.add(_gridGoodsItem[index])
-                }
-                tempList.add(footer)
-                _gridGoodsUiItemList.value = tempList
-            }
-            ItemType.Contents.TYPE_STYLE -> {
-                if (_styleItem.size == _styleUiItemList.value?.size) {
-                    return
-                }
-                val startIndex = _styleUiItemList.value?.size ?: INITIAL_COUNT
-                val lastIndex = _styleItem.size
-                val footer = _styleItem[lastIndex - 1]
-
-                val stopIndex = if (startIndex + spanCount >= lastIndex) {
-                    lastIndex
-                } else {
-                    startIndex + spanCount
-                }
-
-                for (index in 0 until stopIndex - 1) {
-                    tempList.add(_styleItem[index])
-                }
-                tempList.add(footer)
-                _styleUiItemList.value = tempList
-            }
+        val startIndex = uiDataList.value?.size ?: INITIAL_COUNT
+        val lastIndex = dataList.size
+        val footer = dataList[lastIndex - 1]
+        val stopIndex = if (startIndex + spanCount >= lastIndex) {
+            lastIndex
+        } else {
+            startIndex + spanCount
         }
+
+        for (index in 0 until stopIndex - 1) {
+            tempList.add(dataList[index])
+        }
+        tempList.add(footer)
+        uiDataList.value = tempList
     }
 
     fun changeIndicator(
@@ -231,6 +205,54 @@ class HomeViewModel @Inject constructor(
             append(space)
         }
         _indicator.value = indicator
+    }
+
+    fun changeRandomData(
+        type: String,
+        spanCount: Int,
+    ) {
+        val pickNextCount = spanCount * 2
+        when (type) {
+            ItemType.Contents.TYPE_GOODS_GRID -> {
+                makeRandomList(
+                    _gridGoodsItem,
+                    _gridGoodsUiItemList,
+                    pickNextCount
+                )
+            }
+            ItemType.Contents.TYPE_STYLE -> {
+                makeRandomList(
+                    _styleItem,
+                    _styleUiItemList,
+                    pickNextCount
+                )
+            }
+        }
+    }
+
+    private fun makeRandomList(
+        dataList: List<ItemType>,
+        uiDataList: MutableLiveData<List<ItemType>>,
+        pickNextCount: Int,
+    ) {
+        val uiList = uiDataList.value ?: return
+        val itemList = mutableListOf<ItemType>()
+        val newItemList = mutableListOf<ItemType>()
+        itemList.addAll(dataList)
+        val header = itemList[0]
+        val footer = itemList[itemList.size - 1]
+        itemList.removeAt(0)
+        itemList.removeAt(itemList.size - 1)
+        val lastItem = uiList[uiList.size - 2]
+        val lastIndex = dataList.indexOf(lastItem)
+
+        newItemList.add(header)
+        for (index in lastIndex until lastIndex + pickNextCount) {
+            val newIndex = (index % itemList.size)
+            newItemList.add(itemList[newIndex])
+        }
+        newItemList.add(footer)
+        uiDataList.value = newItemList
     }
 
     companion object {

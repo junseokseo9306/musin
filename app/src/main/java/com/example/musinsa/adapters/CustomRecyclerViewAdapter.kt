@@ -12,6 +12,7 @@ import com.example.musinsa.ui.HomeFragment
 class CustomRecyclerViewAdapter(
     private val expandUiCount: (String, Int) -> Unit,
     private val launchBrowser: (String) -> Unit,
+    private val changeRandomData: (String, Int) -> Unit,
 ) : ListAdapter<ItemType, RecyclerView.ViewHolder>(ItemDiffUtil) {
 
     override fun onCreateViewHolder(
@@ -100,6 +101,9 @@ class CustomRecyclerViewAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ItemType.Header) {
             binding.header = item
+            binding.tvHeaderAll.setOnClickListener {
+                launchBrowser(item.linkURL)
+            }
         }
     }
 
@@ -115,6 +119,9 @@ class CustomRecyclerViewAdapter(
             binding.isRefresh = item.type == ItemType.Footer.REFRESH
             binding.btnMore.setOnClickListener {
                 expandUiCount(item.contentType, spanCount)
+            }
+            binding.btnNewGoods.setOnClickListener {
+                changeRandomData(item.contentType, spanCount)
             }
         }
     }
