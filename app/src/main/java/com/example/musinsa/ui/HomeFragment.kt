@@ -1,9 +1,11 @@
 package com.example.musinsa.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,8 +18,6 @@ import com.example.musinsa.common.CustomSpanCount
 import com.example.musinsa.databinding.FragmentHomeBinding
 import com.example.musinsa.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.musinsa.model.Item.ItemType
-import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -25,16 +25,28 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private val bannerAdapter: CustomRecyclerViewAdapter by lazy {
-        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+        CustomRecyclerViewAdapter(
+            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
+            { url -> changeViewToChromeTab(url) }
+        )
     }
     private val gridAdapter: CustomRecyclerViewAdapter by lazy {
-        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+        CustomRecyclerViewAdapter(
+            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
+            { url -> changeViewToChromeTab(url) }
+        )
     }
     private val scrollAdapter: CustomRecyclerViewAdapter by lazy {
-        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+        CustomRecyclerViewAdapter(
+            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
+            { url -> changeViewToChromeTab(url) }
+        )
     }
     private val styleAdapter: CustomRecyclerViewAdapter by lazy {
-        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+        CustomRecyclerViewAdapter(
+            { type, spanCount -> viewModel.expandUiData(type, spanCount) },
+            { url -> changeViewToChromeTab(url) }
+        )
     }
     private val gridManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, GRID_COUNT)
@@ -88,23 +100,26 @@ class HomeFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            bannerItem.observe(viewLifecycleOwner) {
-                bannerAdapter.submitList(it)
+            bannerItem.observe(viewLifecycleOwner) { item ->
+                bannerAdapter.submitList(item)
             }
-            gridGoodsItem.observe(viewLifecycleOwner) {
-                gridAdapter.submitList(it)
+            gridGoodsItem.observe(viewLifecycleOwner) { item ->
+                gridAdapter.submitList(item)
             }
-            scrollGoodsItem.observe(viewLifecycleOwner) {
-                scrollAdapter.submitList(it)
+            scrollGoodsItem.observe(viewLifecycleOwner) { item ->
+                scrollAdapter.submitList(item)
             }
-            scrollGoodsHeader.observe(viewLifecycleOwner) {
-                binding.header = it
+            scrollGoodsHeader.observe(viewLifecycleOwner) { item ->
+                binding.header = item
+                binding.scrollRvHeader.tvHeaderAll.setOnClickListener {
+                    changeViewToChromeTab(item.linkURL)
+                }
             }
-            styleItem.observe(viewLifecycleOwner) {
-                styleAdapter.submitList(it)
+            styleItem.observe(viewLifecycleOwner) { item ->
+                styleAdapter.submitList(item)
             }
-            indicator.observe(viewLifecycleOwner) {
-                binding.bannerIndicator = it
+            indicator.observe(viewLifecycleOwner) { item ->
+                binding.bannerIndicator = item
             }
         }
     }
@@ -117,6 +132,18 @@ class HomeFragment : Fragment() {
                 viewModel.changeIndicator(position)
             }
         })
+    }
+
+    private fun changeViewToChromeTab(url: String) {
+        if (url.isEmpty()) {
+            return
+        }
+        val context = this.context ?: return
+        val uri = Uri.parse(url)
+
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(context, uri)
     }
 
     companion object {

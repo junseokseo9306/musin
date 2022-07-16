@@ -1,10 +1,8 @@
 package com.example.musinsa.adapters
 
 import android.text.Spannable
-import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.widget.TextView
 import androidx.core.text.buildSpannedString
 import androidx.databinding.BindingAdapter

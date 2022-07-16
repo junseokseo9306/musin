@@ -11,6 +11,7 @@ import com.example.musinsa.ui.HomeFragment
 
 class CustomRecyclerViewAdapter(
     private val expandUiCount: (String, Int) -> Unit,
+    private val launchBrowser: (String) -> Unit,
 ) : ListAdapter<Item.ItemType, RecyclerView.ViewHolder>(ItemDiffUtil) {
 
     override fun onCreateViewHolder(
@@ -61,32 +62,40 @@ class CustomRecyclerViewAdapter(
         }
     }
 
-    class ItemBannerViewHolder(
+    inner class ItemBannerViewHolder(
         private val binding: ItemViewpagerBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Contents.Banner) {
             binding.item = item
+            itemView.setOnClickListener {
+                launchBrowser(item.linkURL)
+            }
         }
     }
 
-    class ItemGoodsViewHolder(
+    inner class ItemGoodsViewHolder(
         private val binding: ItemRecyclerGoodsBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Contents.Goods) {
             binding.item = item
-
+            itemView.setOnClickListener {
+                launchBrowser(item.linkURL)
+            }
         }
     }
 
-    class ItemStyleHolder(
+    inner class ItemStyleHolder(
         private val binding: ItemRecyclerStyleBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Contents.Style) {
             binding.style = item
+            itemView.setOnClickListener {
+                launchBrowser(item.linkURL)
+            }
         }
     }
 
-    class HeaderViewHolder(
+    inner class HeaderViewHolder(
         private val binding: ItemRecyclerHeaderBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Header) {

@@ -1,7 +1,6 @@
 package com.example.musinsa.model
 
 import com.example.musinsa.dto.ItemListDTO
-import kotlin.reflect.typeOf
 
 data class Item(
     val header: ItemType.Header,
@@ -38,16 +37,16 @@ data class Item(
             val styles: List<Style>,
         ) {
             data class Banner(
-                val linkUrl: String,
-                val thumbnailUrl: String,
+                val linkURL: String,
+                val thumbnailURL: String,
                 val title: String?,
                 val description: String?,
                 val keyword: String?,
             ) : ItemType() {
                 companion object {
                     fun of(item: ItemListDTO.ItemDTO.Contents.Banner?) = Banner(
-                        linkUrl = requireNotNull(item?.linkURL),
-                        thumbnailUrl = requireNotNull(item?.thumbnailURL),
+                        linkURL = requireNotNull(item?.linkURL),
+                        thumbnailURL = requireNotNull(item?.thumbnailURL),
                         title = item?.title.orEmpty(),
                         description = item?.description.orEmpty(),
                         keyword = item?.keyword.orEmpty()

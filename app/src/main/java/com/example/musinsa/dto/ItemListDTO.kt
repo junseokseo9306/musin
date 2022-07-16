@@ -2,8 +2,8 @@ package com.example.musinsa.dto
 
 
 import com.example.musinsa.model.Item
-import com.google.gson.annotations.SerializedName
 import com.example.musinsa.model.Item.ItemType
+import com.google.gson.annotations.SerializedName
 
 data class ItemListDTO(
     @SerializedName("data")
