@@ -12,10 +12,6 @@
         <variable
             name="isVisible"
             type="Boolean" />
-
-        <variable
-            name="isRefresh"
-            type="Boolean" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -83,17 +79,6 @@
                 tools:itemCount="1"
                 tools:listitem="@layout/item_recycler_goods" />
 
-            <include
-                android:id="@+id/scroll_rv_footer"
-                layout="@layout/item_recycler_footer"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                app:isRefresh="@{isRefresh}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_scroll_goods_area" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_style"
                 android:layout_width="match_parent"
@@ -103,7 +88,7 @@
                 android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scroll_rv_footer"
+                app:layout_constraintTop_toBottomOf="@id/rv_scroll_goods_area"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_recycler_goods" />
 

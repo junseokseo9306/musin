@@ -94,9 +94,6 @@ class HomeFragment : Fragment() {
             scrollGoodsHeader.observe(viewLifecycleOwner) {
                 binding.header = it
             }
-            scrollGoodsFooter.observe(viewLifecycleOwner) {
-                binding.isRefresh = true
-            }
             styleItem.observe(viewLifecycleOwner) {
                 styleAdapter.submitList(it)
             }

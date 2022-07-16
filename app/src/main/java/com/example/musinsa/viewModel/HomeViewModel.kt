@@ -28,9 +28,6 @@ class HomeViewModel @Inject constructor(
     private val _scrollGoodsHeader = MutableLiveData<Item.ItemType.Header>()
     val scrollGoodsHeader: LiveData<Item.ItemType.Header> = _scrollGoodsHeader
 
-    private val _scrollGoodsFooter = MutableLiveData<Item.ItemType.Footer>()
-    val scrollGoodsFooter: LiveData<Item.ItemType.Footer> = _scrollGoodsFooter
-
     private val _styleItem = MutableLiveData<List<Item.ItemType>>()
     val styleItem: LiveData<List<Item.ItemType>> = _styleItem
 
@@ -80,7 +77,6 @@ class HomeViewModel @Inject constructor(
                 }
                 _scrollGoodsItem.value = itemList
                 _scrollGoodsHeader.value = header
-                _scrollGoodsFooter.value = footer
             }
             Item.ItemType.Contents.TYPE_STYLE -> {
                 header?.let { itemList.add(it) }

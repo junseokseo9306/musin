@@ -95,7 +95,7 @@ class CustomRecyclerViewAdapter :
         private val binding: ItemRecyclerFooterBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Footer) {
-            binding.isRefresh = true
+            binding.isRefresh = item.type == TYPE_REFRESH
         }
     }
 
@@ -118,5 +118,6 @@ class CustomRecyclerViewAdapter :
         const val CONTENTS_STYLE = 2
         const val CONTENTS_BANNER = 3
         const val FOOTER = 4
+        const val TYPE_REFRESH = "REFRESH"
     }
 }
