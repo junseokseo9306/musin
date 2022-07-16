@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.musinsa.model.Item.ItemType
+import java.lang.StringBuilder
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -31,6 +32,9 @@ class HomeViewModel @Inject constructor(
     private var _styleItem = mutableListOf<ItemType>()
     private val _styleUiItemList = MutableLiveData<List<ItemType>>()
     val styleItem: LiveData<List<ItemType>> = _styleUiItemList
+
+    private val _indicator = MutableLiveData<String>()
+    val indicator: LiveData<String> = _indicator
 
     init {
         loadDataFromServer()
@@ -211,9 +215,29 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun changeIndicator(
+        index: Int,
+    ) {
+        val separator = '/'
+        val space = ' '
+        val count = index + 1
+        val total = _bannerItem.value?.size ?: INITIAL_BANNER_COUNT
+        val indicator = buildString {
+            append(space)
+            append(count)
+            append(space)
+            append(separator)
+            append(space)
+            append(total)
+            append(space)
+        }
+        _indicator.value = indicator
+    }
+
     companion object {
         private const val INITIAL_COUNT = 0
         private const val INITIAL_GRID_COUNT = 6
         private const val INITIAL_STYLE_COUNT = 4
+        private const val INITIAL_BANNER_COUNT = 10
     }
 }

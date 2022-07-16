@@ -32,9 +32,9 @@
             android:layout_marginStart="24dp"
             android:layout_marginBottom="80dp"
             android:maxLines="2"
+            app:bannerTitle="@{item.title}"
             app:layout_constraintBottom_toBottomOf="@id/iv_thumbnail"
             app:layout_constraintStart_toStartOf="@id/iv_thumbnail"
-            app:bannerTitle="@{item.title}"
             tools:text="COOL한 여름을" />
 
         <TextView

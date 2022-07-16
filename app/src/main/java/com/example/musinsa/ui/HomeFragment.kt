@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.musinsa.R
 import com.example.musinsa.adapters.CustomRecyclerViewAdapter
 import com.example.musinsa.common.CustomSpanCount
@@ -16,6 +17,7 @@ import com.example.musinsa.databinding.FragmentHomeBinding
 import com.example.musinsa.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.musinsa.model.Item.ItemType
+import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -69,6 +71,7 @@ class HomeFragment : Fragment() {
 
         setBindingAdapters()
         observeData()
+        changeBannerIndicator()
     }
 
     private fun setBindingAdapters() {
@@ -100,7 +103,20 @@ class HomeFragment : Fragment() {
             styleItem.observe(viewLifecycleOwner) {
                 styleAdapter.submitList(it)
             }
+            indicator.observe(viewLifecycleOwner) {
+                binding.bannerIndicator = it
+            }
         }
+    }
+
+    private fun changeBannerIndicator() {
+        binding.vpBannerArea.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.changeIndicator(position)
+            }
+        })
     }
 
     companion object {
