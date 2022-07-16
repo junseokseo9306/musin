@@ -28,12 +28,12 @@
 
         <TextView
             android:id="@+id/tv_goods_title"
+            style="@style/GoodsTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             android:text="@{item.brandName}"
-            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_goods_thumbnail"
             tools:text="캐치볼"
@@ -41,12 +41,11 @@
 
         <TextView
             android:id="@+id/tv_goods_price"
+            style="@style/GoodsTextStyle.PriceBold.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
             app:price="@{item.price}"
@@ -54,12 +53,11 @@
 
         <TextView
             android:id="@+id/tv_goods_sale_rate"
+            style="@style/GoodsTextStyle.PriceBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
             app:colorText="@{item.saleRate}"
             app:layout_constraintEnd_toStartOf="@id/tv_goods_coupon"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
@@ -67,6 +65,7 @@
 
         <TextView
             android:id="@+id/tv_goods_coupon"
+            style="@style/GoodsTextStyle.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -74,8 +73,6 @@
             android:layout_marginEnd="2dp"
             android:background="@drawable/icon_coupon"
             android:text="@string/goods_coupon"
-            android:textColor="@color/white"
-            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
             app:visible="@{item.hasCoupon}" />
