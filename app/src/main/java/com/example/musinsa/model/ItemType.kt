@@ -110,6 +110,7 @@ data class Item(
                 )
 
                 const val INITIAL_VALUE = ""
+                const val REFRESH = "REFRESH"
                 val INITIAL_HEADER = Footer(
                     type = INITIAL_VALUE,
                     title = INITIAL_VALUE,

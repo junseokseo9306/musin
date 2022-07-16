@@ -18,7 +18,7 @@ fun setTitleLineSeparation(view: TextView, title: String?) {
     val modifiedString = StringBuilder()
     val nonNullTitle = title ?: ""
     for (index in nonNullTitle.indices) {
-        if (index >= maxLength && nonNullTitle[index] == blank && !isChanged) {
+        if (!isChanged && index >= maxLength && nonNullTitle[index] == blank) {
             modifiedString.append(lineSeparator)
             isChanged = true
         } else {
