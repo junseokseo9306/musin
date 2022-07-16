@@ -1,11 +1,12 @@
 package com.example.musinsa.model
 
 import com.example.musinsa.dto.ItemListDTO
+import kotlin.reflect.typeOf
 
 data class Item(
-    val header: ItemType.Header?,
+    val header: ItemType.Header,
     val contents: ItemType.Contents,
-    val footer: ItemType.Footer?,
+    val footer: ItemType.Footer,
     val type: String,
 ) {
     sealed class ItemType {
@@ -21,6 +22,13 @@ data class Item(
                     iconURL = item?.iconURL.orEmpty(),
                     linkURL = item?.linkURL.orEmpty(),
                 )
+
+                private const val INITIAL_VALUE = ""
+                val INITIAL_HEADER = Header(
+                    title = INITIAL_VALUE,
+                    iconURL = INITIAL_VALUE,
+                    linkURL = INITIAL_VALUE
+                )
             }
         }
 
@@ -28,7 +36,6 @@ data class Item(
             val banners: List<Banner>,
             val goods: List<Goods>,
             val styles: List<Style>,
-            val type: String,
         ) {
             data class Banner(
                 val linkUrl: String,
@@ -100,6 +107,13 @@ data class Item(
                     type = item?.type.orEmpty(),
                     title = item?.title.orEmpty(),
                     iconURL = item?.iconURL.orEmpty()
+                )
+
+                private const val INITIAL_VALUE = ""
+                val INITIAL_HEADER = Footer(
+                    type = INITIAL_VALUE,
+                    title = INITIAL_VALUE,
+                    iconURL = INITIAL_VALUE
                 )
             }
         }
