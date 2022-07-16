@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musinsa.databinding.*
 import com.example.musinsa.model.Item
+import com.example.musinsa.ui.HomeFragment
 
-class CustomRecyclerViewAdapter :
-    ListAdapter<Item.ItemType, RecyclerView.ViewHolder>(ItemDiffUtil) {
+class CustomRecyclerViewAdapter(
+    private val expandUiCount: (String, Int) -> Unit,
+) : ListAdapter<Item.ItemType, RecyclerView.ViewHolder>(ItemDiffUtil) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int,
@@ -72,6 +74,7 @@ class CustomRecyclerViewAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Contents.Goods) {
             binding.item = item
+
         }
     }
 
@@ -91,11 +94,21 @@ class CustomRecyclerViewAdapter :
         }
     }
 
-    class FooterViewHolder(
+    inner class FooterViewHolder(
         private val binding: ItemRecyclerFooterBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item.ItemType.Footer) {
-            binding.isRefresh = item.type == TYPE_REFRESH
+            val spanCount = if (item.contentType == Item.ItemType.Contents.TYPE_GOODS_GRID) {
+                HomeFragment.GRID_COUNT
+            } else {
+                HomeFragment.STYLE_COUNT
+            }
+            if (item.type != TYPE_REFRESH) {
+                binding.isRefresh = false
+                binding.btnMore.setOnClickListener {
+                    expandUiCount(item.contentType, spanCount)
+                }
+            }
         }
     }
 

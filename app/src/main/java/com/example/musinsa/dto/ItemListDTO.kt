@@ -136,6 +136,7 @@ fun ItemListDTO.toItemList(): List<Item> {
             }
         }
 
+        footer.contentType = type
         val item = Item(
             header = header,
             contents = ItemType.Contents(

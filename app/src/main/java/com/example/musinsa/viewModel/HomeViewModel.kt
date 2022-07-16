@@ -18,7 +18,7 @@ class HomeViewModel @Inject constructor(
     private val _bannerItem = MutableLiveData<List<ItemType>>()
     val bannerItem: LiveData<List<ItemType>> = _bannerItem
 
-    private val _gridGoodsItem = MutableLiveData<List<ItemType>>()
+    private var _gridGoodsItem = mutableListOf<ItemType>()
     private val _gridGoodsUiItemList = MutableLiveData<List<ItemType>>()
     val gridGoodsItem: LiveData<List<ItemType>> = _gridGoodsUiItemList
 
@@ -28,7 +28,7 @@ class HomeViewModel @Inject constructor(
     private val _scrollGoodsHeader = MutableLiveData<ItemType.Header>()
     val scrollGoodsHeader: LiveData<ItemType.Header> = _scrollGoodsHeader
 
-    private val _styleItem = MutableLiveData<List<ItemType>>()
+    private var _styleItem = mutableListOf<ItemType>()
     private val _styleUiItemList = MutableLiveData<List<ItemType>>()
     val styleItem: LiveData<List<ItemType>> = _styleUiItemList
 
@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
                     type,
                     dataList
                 )
-                _gridGoodsItem.value = dataList
+                _gridGoodsItem = dataList.toMutableList()
                 _gridGoodsUiItemList.value = uiDataList
             }
             ItemType.Contents.TYPE_GOODS_SCROLL -> {
@@ -99,7 +99,7 @@ class HomeViewModel @Inject constructor(
                     type,
                     dataList
                 )
-                _styleItem.value = dataList
+                _styleItem = dataList.toMutableList()
                 _styleUiItemList.value = uiDataList
             }
         }
@@ -158,6 +158,55 @@ class HomeViewModel @Inject constructor(
                 val footer = dataList[dataList.size - 1]
                 uiDataList.add(footer)
                 uiDataList
+            }
+        }
+    }
+
+    fun expandUiData(
+        type: String,
+        spanCount: Int,
+    ) {
+        val tempList = mutableListOf<ItemType>()
+        when (type) {
+            ItemType.Contents.TYPE_GOODS_GRID -> {
+                if (_gridGoodsItem.size == _gridGoodsUiItemList.value?.size) {
+                    return
+                }
+                val startIndex = _gridGoodsUiItemList.value?.size ?: INITIAL_COUNT
+                val lastIndex = _gridGoodsItem.size
+                val footer = _gridGoodsItem[lastIndex - 1]
+
+                val stopIndex = if (startIndex + spanCount >= lastIndex) {
+                    lastIndex
+                } else {
+                    startIndex + spanCount
+                }
+
+                for (index in 0 until stopIndex - 1) {
+                    tempList.add(_gridGoodsItem[index])
+                }
+                tempList.add(footer)
+                _gridGoodsUiItemList.value = tempList
+            }
+            ItemType.Contents.TYPE_STYLE -> {
+                if (_styleItem.size == _styleUiItemList.value?.size) {
+                    return
+                }
+                val startIndex = _styleUiItemList.value?.size ?: INITIAL_COUNT
+                val lastIndex = _styleItem.size
+                val footer = _styleItem[lastIndex - 1]
+
+                val stopIndex = if (startIndex + spanCount >= lastIndex) {
+                    lastIndex
+                } else {
+                    startIndex + spanCount
+                }
+
+                for (index in 0 until stopIndex - 1) {
+                    tempList.add(_styleItem[index])
+                }
+                tempList.add(footer)
+                _styleUiItemList.value = tempList
             }
         }
     }

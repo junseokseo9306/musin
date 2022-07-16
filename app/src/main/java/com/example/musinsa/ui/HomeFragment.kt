@@ -20,12 +20,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var bannerAdapter: CustomRecyclerViewAdapter
-    private lateinit var gridAdapter: CustomRecyclerViewAdapter
-    private lateinit var scrollAdapter: CustomRecyclerViewAdapter
-    private lateinit var styleAdapter: CustomRecyclerViewAdapter
     private val viewModel: HomeViewModel by viewModels()
-
+    private val bannerAdapter: CustomRecyclerViewAdapter by lazy {
+        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+    }
+    private val gridAdapter: CustomRecyclerViewAdapter by lazy {
+        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+    }
+    private val scrollAdapter: CustomRecyclerViewAdapter by lazy {
+        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+    }
+    private val styleAdapter: CustomRecyclerViewAdapter by lazy {
+        CustomRecyclerViewAdapter { type, spanCount -> viewModel.expandUiData(type, spanCount) }
+    }
     private val gridManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, GRID_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
@@ -34,7 +41,6 @@ class HomeFragment : Fragment() {
         )
         manager
     }
-
     private val styleManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, STYLE_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
@@ -43,7 +49,6 @@ class HomeFragment : Fragment() {
         )
         manager
     }
-
     private val scrollManager: LinearLayoutManager by lazy {
         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
@@ -60,10 +65,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bannerAdapter = CustomRecyclerViewAdapter()
-        gridAdapter = CustomRecyclerViewAdapter()
-        scrollAdapter = CustomRecyclerViewAdapter()
-        styleAdapter = CustomRecyclerViewAdapter()
 
         setBindingAdapters()
         observeData()
@@ -102,8 +103,8 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-        private const val GRID_COUNT = 3
-        private const val STYLE_COUNT = 2
+        const val GRID_COUNT = 3
+        const val STYLE_COUNT = 2
         fun newInstance() = HomeFragment()
     }
 }

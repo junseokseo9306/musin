@@ -101,6 +101,7 @@ data class Item(
             val type: String,
             val title: String,
             val iconURL: String,
+            var contentType: String = INITIAL_VALUE,
         ) : ItemType() {
             companion object {
                 fun of(item: ItemListDTO.ItemDTO.Footer?) = Footer(
