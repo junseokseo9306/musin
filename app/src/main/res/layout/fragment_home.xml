@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="header"
+            type="com.example.musinsa.model.Item.ItemType.Header" />
+
+        <variable
+            name="isVisible"
+            type="Boolean" />
+
+        <variable
+            name="bannerIndicator"
+            type="String" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_app_title_icon"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:contentDescription="@string/musinsa_app_title"
+                android:src="@drawable/musinsa_app_bar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_banner_area"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_app_title_icon" />
+
+            <TextView
+                android:id="@+id/tv_indicator"
+                style="@style/BannerTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="48dp"
+                android:background="@drawable/item_viewpager_indicator"
+                android:text="@{bannerIndicator}"
+                app:layout_constraintBottom_toBottomOf="@id/vp_banner_area"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="1 / 2" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_grid_goods_area"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_banner_area"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_recycler_goods" />
+
+            <include
+                android:id="@+id/scroll_rv_header"
+                layout="@layout/item_recycler_header"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:header="@{header}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_grid_goods_area" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_scroll_goods_area"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scroll_rv_header"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_recycler_goods" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_style_area"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_scroll_goods_area"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_recycler_goods" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

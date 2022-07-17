@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BannerTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BannerTextStyle.Title">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="GoodsTextStyle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="GoodsTextStyle.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="GoodsTextStyle.PriceBold">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GoodsTextStyle.PriceBold.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

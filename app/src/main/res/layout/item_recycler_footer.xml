@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isRefresh"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_new_goods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/footer_background"
+            android:drawableStart="@drawable/ic_baseline_refresh_24"
+            android:drawableTint="@color/grey2"
+            android:text="@string/new_goods"
+            android:textColor="@color/grey2"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{isRefresh}"
+            tools:targetApi="m" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/footer_background"
+            android:text="@string/see_more_goods"
+            android:textColor="@color/grey2"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{!isRefresh}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
