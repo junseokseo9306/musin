@@ -188,7 +188,7 @@ class HomeViewModel @Inject constructor(
         uiDataList.value = tempList
     }
 
-    fun changeIndicator(
+    fun changeBannerIndicator(
         index: Int,
     ) {
         val separator = '/'
@@ -207,33 +207,33 @@ class HomeViewModel @Inject constructor(
         _indicator.value = indicator
     }
 
-    fun changeRandomData(
+    fun changeUiDataRandomly(
         type: String,
         spanCount: Int,
     ) {
-        val pickNextCount = spanCount * 2
+        val pickNextItemCount = spanCount * 2
         when (type) {
             ItemType.TYPE_GOODS_GRID -> {
-                makeRandomList(
+                makeRandomItemList(
                     _gridGoodsItem,
                     _gridGoodsUiItemList,
-                    pickNextCount
+                    pickNextItemCount
                 )
             }
             ItemType.TYPE_STYLE -> {
-                makeRandomList(
+                makeRandomItemList(
                     _styleItem,
                     _styleUiItemList,
-                    pickNextCount
+                    pickNextItemCount
                 )
             }
         }
     }
 
-    private fun makeRandomList(
+    private fun makeRandomItemList(
         dataList: List<ItemType>,
         uiDataList: MutableLiveData<List<ItemType>>,
-        pickNextCount: Int,
+        pickNextItemCount: Int,
     ) {
         val uiList = uiDataList.value ?: return
         val itemList = mutableListOf<ItemType>()
@@ -247,7 +247,7 @@ class HomeViewModel @Inject constructor(
         val lastIndex = dataList.indexOf(lastItem)
 
         newItemList.add(header)
-        for (index in lastIndex until lastIndex + pickNextCount) {
+        for (index in lastIndex until lastIndex + pickNextItemCount) {
             val newIndex = (index % itemList.size)
             newItemList.add(itemList[newIndex])
         }

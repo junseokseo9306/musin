@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
         CustomRecyclerViewAdapter(
             launchBrowser = { url -> changeViewToChromeTab(url) },
             expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) }
+            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) }
         )
     }
 
@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         CustomRecyclerViewAdapter(
             launchBrowser = { url -> changeViewToChromeTab(url) },
             expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) },
+            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) },
             spanCount = GRID_COUNT
         )
     }
@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         CustomRecyclerViewAdapter(
             launchBrowser = { url -> changeViewToChromeTab(url) },
             expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) }
+            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) }
         )
     }
 
@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
         CustomRecyclerViewAdapter(
             launchBrowser = { url -> changeViewToChromeTab(url) },
             expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeRandomData(type, spanCount) },
+            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) },
             spanCount = STYLE_COUNT
         )
     }
@@ -87,7 +87,7 @@ class HomeFragment : Fragment() {
 
     private val customViewPagerCallback: CustomViewPagerCallback by lazy {
         CustomViewPagerCallback { index ->
-            viewModel.changeIndicator(index)
+            viewModel.changeBannerIndicator(index)
         }
     }
 
