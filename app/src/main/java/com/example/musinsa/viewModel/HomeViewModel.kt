@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.musinsa.common.CustomException
+import com.example.musinsa.model.CoroutineExceptionType
 import com.example.musinsa.model.Item.ItemType
 import com.example.musinsa.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,12 +38,85 @@ class HomeViewModel @Inject constructor(
     private val _indicator = MutableLiveData<String>()
     val indicator: LiveData<String> = _indicator
 
+    private val _error = MutableLiveData<CoroutineExceptionType>()
+    val error: LiveData<CoroutineExceptionType> = _error
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        _error.value = CustomException.check(throwable)
+    }
+
     init {
         loadDataFromServer()
     }
 
+    fun changeBannerIndicator(
+        index: Int,
+    ) {
+        val separator = '/'
+        val space = ' '
+        val count = index + 1
+        val total = _bannerItem.value?.size ?: INITIAL_BANNER_COUNT
+        val indicator = buildString {
+            append(space)
+            append(count)
+            append(space)
+            append(separator)
+            append(space)
+            append(total)
+            append(space)
+        }
+        _indicator.value = indicator
+    }
+
+    fun changeUiDataRandomly(
+        type: String,
+        spanCount: Int,
+    ) {
+        val pickNextItemCount = spanCount * 2
+        when (type) {
+            ItemType.TYPE_GOODS_GRID -> {
+                makeRandomItemList(
+                    _gridGoodsItem,
+                    _gridGoodsUiItemList,
+                    pickNextItemCount
+                )
+            }
+
+            ItemType.TYPE_STYLE -> {
+                makeRandomItemList(
+                    _styleItem,
+                    _styleUiItemList,
+                    pickNextItemCount
+                )
+            }
+        }
+    }
+
+    fun expandUiItemList(
+        type: String,
+        spanCount: Int,
+    ) {
+        when (type) {
+            ItemType.TYPE_GOODS_GRID -> {
+                makeExpandItemList(
+                    _gridGoodsItem,
+                    _gridGoodsUiItemList,
+                    spanCount
+                )
+            }
+
+            ItemType.TYPE_STYLE -> {
+                makeExpandItemList(
+                    _styleItem,
+                    _styleUiItemList,
+                    spanCount
+                )
+            }
+        }
+    }
+
     private fun loadDataFromServer() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             val data = repository.getItemList()
             data.forEach { item ->
                 addDataToLiveData(
@@ -112,6 +188,7 @@ class HomeViewModel @Inject constructor(
         }
         return when (type) {
             ItemType.TYPE_GOODS_SCROLL -> itemList
+
             ItemType.TYPE_BANNER -> itemList
             else -> {
                 if (header != ItemType.INITIAL_HEADER) {
@@ -133,36 +210,16 @@ class HomeViewModel @Inject constructor(
             ItemType.TYPE_GOODS_GRID -> {
                 dataList.slice(INITIAL_COUNT..INITIAL_GRID_COUNT).toMutableList()
             }
+
             ItemType.TYPE_STYLE -> {
                 dataList.slice(INITIAL_COUNT..INITIAL_STYLE_COUNT).toMutableList()
             }
+
             else -> return dataList
         }
         val footer = dataList[dataList.size - 1]
         uiDataList.add(footer)
         return uiDataList
-    }
-
-    fun expandUiItemList(
-        type: String,
-        spanCount: Int,
-    ) {
-        when (type) {
-            ItemType.TYPE_GOODS_GRID -> {
-                makeExpandItemList(
-                    _gridGoodsItem,
-                    _gridGoodsUiItemList,
-                    spanCount
-                )
-            }
-            ItemType.TYPE_STYLE -> {
-                makeExpandItemList(
-                    _styleItem,
-                    _styleUiItemList,
-                    spanCount
-                )
-            }
-        }
     }
 
     private fun makeExpandItemList(
@@ -186,48 +243,6 @@ class HomeViewModel @Inject constructor(
         }
         tempList.add(footer)
         uiDataList.value = tempList
-    }
-
-    fun changeBannerIndicator(
-        index: Int,
-    ) {
-        val separator = '/'
-        val space = ' '
-        val count = index + 1
-        val total = _bannerItem.value?.size ?: INITIAL_BANNER_COUNT
-        val indicator = buildString {
-            append(space)
-            append(count)
-            append(space)
-            append(separator)
-            append(space)
-            append(total)
-            append(space)
-        }
-        _indicator.value = indicator
-    }
-
-    fun changeUiDataRandomly(
-        type: String,
-        spanCount: Int,
-    ) {
-        val pickNextItemCount = spanCount * 2
-        when (type) {
-            ItemType.TYPE_GOODS_GRID -> {
-                makeRandomItemList(
-                    _gridGoodsItem,
-                    _gridGoodsUiItemList,
-                    pickNextItemCount
-                )
-            }
-            ItemType.TYPE_STYLE -> {
-                makeRandomItemList(
-                    _styleItem,
-                    _styleUiItemList,
-                    pickNextItemCount
-                )
-            }
-        }
     }
 
     private fun makeRandomItemList(

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.example.musinsa.adapters.CustomRecyclerViewAdapter
 import com.example.musinsa.common.CustomSpanCount
 import com.example.musinsa.common.CustomViewPagerCallback
 import com.example.musinsa.databinding.FragmentHomeBinding
+import com.example.musinsa.model.CoroutineExceptionType
 import com.example.musinsa.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,34 +29,82 @@ class HomeFragment : Fragment() {
 
     private val bannerAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            launchBrowser = { url -> changeViewToChromeTab(url) },
-            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) }
+            launchBrowser = { url ->
+                changeViewToChromeTab(url)
+            },
+            expandUiCount = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.expandUiItemList(type, spanCount)
+            },
+            changeRandomData = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.changeUiDataRandomly(type, spanCount)
+            }
         )
     }
 
     private val gridAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            launchBrowser = { url -> changeViewToChromeTab(url) },
-            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) },
+            launchBrowser = { url ->
+                changeViewToChromeTab(url)
+            },
+            expandUiCount = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.expandUiItemList(type, spanCount)
+            },
+            changeRandomData = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.changeUiDataRandomly(type, spanCount)
+            },
             spanCount = GRID_COUNT
         )
     }
 
     private val scrollAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            launchBrowser = { url -> changeViewToChromeTab(url) },
-            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) }
+            launchBrowser = { url ->
+                changeViewToChromeTab(url)
+            },
+            expandUiCount = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.expandUiItemList(type, spanCount)
+            },
+            changeRandomData = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.changeUiDataRandomly(type, spanCount)
+            }
         )
     }
 
     private val styleAdapter: CustomRecyclerViewAdapter by lazy {
         CustomRecyclerViewAdapter(
-            launchBrowser = { url -> changeViewToChromeTab(url) },
-            expandUiCount = { type, spanCount -> viewModel.expandUiItemList(type, spanCount) },
-            changeRandomData = { type, spanCount -> viewModel.changeUiDataRandomly(type, spanCount) },
+            launchBrowser = { url ->
+                changeViewToChromeTab(url)
+            },
+            expandUiCount = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.expandUiItemList(type, spanCount)
+            },
+            changeRandomData = {
+                    type,
+                    spanCount,
+                ->
+                viewModel.changeUiDataRandomly(type, spanCount)
+            },
             spanCount = STYLE_COUNT
         )
     }
@@ -62,7 +112,9 @@ class HomeFragment : Fragment() {
     private val gridManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, GRID_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
-            getItemType = { index -> gridAdapter.getItemViewType(index) },
+            getItemType = { index ->
+                gridAdapter.getItemViewType(index)
+            },
             spanCount = GRID_COUNT
         )
         manager
@@ -71,7 +123,9 @@ class HomeFragment : Fragment() {
     private val styleManager: GridLayoutManager by lazy {
         val manager = GridLayoutManager(context, STYLE_COUNT)
         manager.spanSizeLookup = CustomSpanCount(
-            getItemType = { index -> styleAdapter.getItemViewType(index) },
+            getItemType = { index ->
+                styleAdapter.getItemViewType(index)
+            },
             spanCount = STYLE_COUNT
         )
         manager
@@ -123,26 +177,29 @@ class HomeFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            bannerItem.observe(viewLifecycleOwner) { item ->
-                bannerAdapter.submitList(item)
+            bannerItem.observe(viewLifecycleOwner) {
+                bannerAdapter.submitList(it)
             }
-            gridGoodsItem.observe(viewLifecycleOwner) { item ->
-                gridAdapter.submitList(item)
+            gridGoodsItem.observe(viewLifecycleOwner) {
+                gridAdapter.submitList(it)
             }
-            scrollGoodsItem.observe(viewLifecycleOwner) { item ->
-                scrollAdapter.submitList(item)
+            scrollGoodsItem.observe(viewLifecycleOwner) {
+                scrollAdapter.submitList(it)
             }
-            scrollGoodsHeader.observe(viewLifecycleOwner) { item ->
-                binding.header = item
+            scrollGoodsHeader.observe(viewLifecycleOwner) { header ->
+                binding.header = header
                 binding.scrollRvHeader.tvHeaderAll.setOnClickListener {
-                    changeViewToChromeTab(item.linkURL)
+                    changeViewToChromeTab(header.linkURL)
                 }
             }
-            styleItem.observe(viewLifecycleOwner) { item ->
-                styleAdapter.submitList(item)
+            styleItem.observe(viewLifecycleOwner) {
+                styleAdapter.submitList(it)
             }
-            indicator.observe(viewLifecycleOwner) { item ->
-                binding.bannerIndicator = item
+            indicator.observe(viewLifecycleOwner) {
+                binding.bannerIndicator = it
+            }
+            error.observe(viewLifecycleOwner) {
+                makeErrorToast(it)
             }
         }
     }
@@ -163,6 +220,10 @@ class HomeFragment : Fragment() {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(context, uri)
+    }
+
+    private fun makeErrorToast(exception: CoroutineExceptionType) {
+        Toast.makeText(context, exception.errorMessage, Toast.LENGTH_LONG).show()
     }
 
     companion object {

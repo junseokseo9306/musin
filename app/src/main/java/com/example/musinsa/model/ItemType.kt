@@ -1,6 +1,6 @@
 package com.example.musinsa.model
 
-import com.example.musinsa.dto.ItemListDTO
+import com.example.musinsa.dto.ItemListDTO.ItemDTO
 
 data class Item(
     val header: ItemType.Header,
@@ -70,13 +70,13 @@ data class Item(
                 iconURL = INITIAL_VALUE
             )
 
-            fun headerOf(item: ItemListDTO.ItemDTO.Header?) = Header(
+            fun headerOf(item: ItemDTO.Header?) = Header(
                 title = item?.title.orEmpty(),
                 iconURL = item?.iconURL.orEmpty(),
                 linkURL = item?.linkURL.orEmpty(),
             )
 
-            fun bannerOf(item: ItemListDTO.ItemDTO.Contents.Banner?) = Contents.Banner(
+            fun bannerOf(item: ItemDTO.Contents.Banner?) = Contents.Banner(
                 linkURL = requireNotNull(item?.linkURL),
                 thumbnailURL = requireNotNull(item?.thumbnailURL),
                 title = item?.title.orEmpty(),
@@ -84,7 +84,7 @@ data class Item(
                 keyword = item?.keyword.orEmpty()
             )
 
-            fun goodsOf(type: String, item: ItemListDTO.ItemDTO.Contents.Good?) = Contents.Goods(
+            fun goodsOf(type: String, item: ItemDTO.Contents.Good?) = Contents.Goods(
                 layoutType = type,
                 linkURL = requireNotNull(item?.linkURL),
                 thumbnailURL = requireNotNull(item?.thumbnailURL),
@@ -94,12 +94,12 @@ data class Item(
                 hasCoupon = requireNotNull(item?.hasCoupon)
             )
 
-            fun styleOf(item: ItemListDTO.ItemDTO.Contents.Style?) = Contents.Style(
+            fun styleOf(item: ItemDTO.Contents.Style?) = Contents.Style(
                 linkURL = requireNotNull(item?.linkURL),
                 thumbnailURL = requireNotNull(item?.thumbnailURL)
             )
 
-            fun footerOf(item: ItemListDTO.ItemDTO.Footer?) = Footer(
+            fun footerOf(item: ItemDTO.Footer?) = Footer(
                 type = item?.type.orEmpty(),
                 title = item?.title.orEmpty(),
                 iconURL = item?.iconURL.orEmpty()

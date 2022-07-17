@@ -57,9 +57,13 @@ class CustomRecyclerViewAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position]) {
             is ItemType.Header -> HEADER
+
             is ItemType.Contents.Goods -> CONTENTS_GOODS
+
             is ItemType.Contents.Style -> CONTENTS_STYLE
+
             is ItemType.Contents.Banner -> CONTENTS_BANNER
+
             is ItemType.Footer -> FOOTER
         }
     }
