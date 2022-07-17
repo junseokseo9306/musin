@@ -13,6 +13,7 @@ class CustomRecyclerViewAdapter(
     private val expandUiCount: (String, Int) -> Unit,
     private val launchBrowser: (String) -> Unit,
     private val changeRandomData: (String, Int) -> Unit,
+    private val spanCount: Int = 0
 ) : ListAdapter<ItemType, RecyclerView.ViewHolder>(ItemDiffUtil) {
 
     override fun onCreateViewHolder(
@@ -111,11 +112,6 @@ class CustomRecyclerViewAdapter(
         private val binding: ItemRecyclerFooterBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ItemType.Footer) {
-            val spanCount = if (item.contentType == ItemType.Contents.TYPE_GOODS_GRID) {
-                HomeFragment.GRID_COUNT
-            } else {
-                HomeFragment.STYLE_COUNT
-            }
             binding.isRefresh = item.type == ItemType.Footer.REFRESH
             binding.btnMore.setOnClickListener {
                 expandUiCount(item.contentType, spanCount)
