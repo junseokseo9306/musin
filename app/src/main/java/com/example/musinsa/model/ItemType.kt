@@ -14,22 +14,7 @@ data class Item(
             val title: String,
             val iconURL: String,
             val linkURL: String,
-        ) : ItemType() {
-            companion object {
-                fun of(item: ItemListDTO.ItemDTO.Header?) = Header(
-                    title = item?.title.orEmpty(),
-                    iconURL = item?.iconURL.orEmpty(),
-                    linkURL = item?.linkURL.orEmpty(),
-                )
-
-                const val INITIAL_VALUE = ""
-                val INITIAL_HEADER = Header(
-                    title = INITIAL_VALUE,
-                    iconURL = INITIAL_VALUE,
-                    linkURL = INITIAL_VALUE
-                )
-            }
-        }
+        ) : ItemType()
 
         data class Contents(
             val banners: List<Banner>,
@@ -39,20 +24,10 @@ data class Item(
             data class Banner(
                 val linkURL: String,
                 val thumbnailURL: String,
-                val title: String?,
-                val description: String?,
-                val keyword: String?,
-            ) : ItemType() {
-                companion object {
-                    fun of(item: ItemListDTO.ItemDTO.Contents.Banner?) = Banner(
-                        linkURL = requireNotNull(item?.linkURL),
-                        thumbnailURL = requireNotNull(item?.thumbnailURL),
-                        title = item?.title.orEmpty(),
-                        description = item?.description.orEmpty(),
-                        keyword = item?.keyword.orEmpty()
-                    )
-                }
-            }
+                val title: String,
+                val description: String,
+                val keyword: String,
+            ) : ItemType()
 
             data class Goods(
                 val layoutType: String,
@@ -62,38 +37,12 @@ data class Item(
                 val price: Int,
                 val saleRate: Int,
                 val hasCoupon: Boolean,
-            ) : ItemType() {
-                companion object {
-                    fun of(type: String, item: ItemListDTO.ItemDTO.Contents.Good?) = Goods(
-                        layoutType = type,
-                        linkURL = requireNotNull(item?.linkURL),
-                        thumbnailURL = requireNotNull(item?.thumbnailURL),
-                        brandName = requireNotNull(item?.brandName),
-                        price = requireNotNull(item?.price),
-                        saleRate = requireNotNull(item?.saleRate),
-                        hasCoupon = requireNotNull(item?.hasCoupon)
-                    )
-                }
-            }
+            ) : ItemType()
 
             data class Style(
                 val linkURL: String,
                 val thumbnailURL: String,
-            ) : ItemType() {
-                companion object {
-                    fun of(item: ItemListDTO.ItemDTO.Contents.Style?) = Style(
-                        linkURL = requireNotNull(item?.linkURL),
-                        thumbnailURL = requireNotNull(item?.thumbnailURL)
-                    )
-                }
-            }
-
-            companion object {
-                const val TYPE_BANNER = "BANNER"
-                const val TYPE_GOODS_SCROLL = "SCROLL"
-                const val TYPE_GOODS_GRID = "GRID"
-                const val TYPE_STYLE = "STYLE"
-            }
+            ) : ItemType()
         }
 
         data class Footer(
@@ -101,22 +50,60 @@ data class Item(
             val title: String,
             val iconURL: String,
             var contentType: String = INITIAL_VALUE,
-        ) : ItemType() {
-            companion object {
-                fun of(item: ItemListDTO.ItemDTO.Footer?) = Footer(
-                    type = item?.type.orEmpty(),
-                    title = item?.title.orEmpty(),
-                    iconURL = item?.iconURL.orEmpty()
-                )
+        ) : ItemType()
 
-                const val INITIAL_VALUE = ""
-                const val REFRESH = "REFRESH"
-                val INITIAL_HEADER = Footer(
-                    type = INITIAL_VALUE,
-                    title = INITIAL_VALUE,
-                    iconURL = INITIAL_VALUE
-                )
-            }
+        companion object {
+            const val TYPE_BANNER = "BANNER"
+            const val TYPE_GOODS_SCROLL = "SCROLL"
+            const val TYPE_GOODS_GRID = "GRID"
+            const val TYPE_STYLE = "STYLE"
+            const val REFRESH = "REFRESH"
+            const val INITIAL_VALUE = ""
+            val INITIAL_HEADER = Header(
+                title = INITIAL_VALUE,
+                iconURL = INITIAL_VALUE,
+                linkURL = INITIAL_VALUE
+            )
+            val INITIAL_FOOTER = Footer(
+                type = INITIAL_VALUE,
+                title = INITIAL_VALUE,
+                iconURL = INITIAL_VALUE
+            )
+
+            fun headerOf(item: ItemListDTO.ItemDTO.Header?) = Header(
+                title = item?.title.orEmpty(),
+                iconURL = item?.iconURL.orEmpty(),
+                linkURL = item?.linkURL.orEmpty(),
+            )
+
+            fun bannerOf(item: ItemListDTO.ItemDTO.Contents.Banner?) = Contents.Banner(
+                linkURL = requireNotNull(item?.linkURL),
+                thumbnailURL = requireNotNull(item?.thumbnailURL),
+                title = item?.title.orEmpty(),
+                description = item?.description.orEmpty(),
+                keyword = item?.keyword.orEmpty()
+            )
+
+            fun goodsOf(type: String, item: ItemListDTO.ItemDTO.Contents.Good?) = Contents.Goods(
+                layoutType = type,
+                linkURL = requireNotNull(item?.linkURL),
+                thumbnailURL = requireNotNull(item?.thumbnailURL),
+                brandName = requireNotNull(item?.brandName),
+                price = requireNotNull(item?.price),
+                saleRate = requireNotNull(item?.saleRate),
+                hasCoupon = requireNotNull(item?.hasCoupon)
+            )
+
+            fun styleOf(item: ItemListDTO.ItemDTO.Contents.Style?) = Contents.Style(
+                linkURL = requireNotNull(item?.linkURL),
+                thumbnailURL = requireNotNull(item?.thumbnailURL)
+            )
+
+            fun footerOf(item: ItemListDTO.ItemDTO.Footer?) = Footer(
+                type = item?.type.orEmpty(),
+                title = item?.title.orEmpty(),
+                iconURL = item?.iconURL.orEmpty()
+            )
         }
     }
 }

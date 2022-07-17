@@ -70,18 +70,18 @@ class HomeViewModel @Inject constructor(
             itemList
         )
         when (type) {
-            ItemType.Contents.TYPE_BANNER -> {
+            ItemType.TYPE_BANNER -> {
                 _bannerItem.value = itemList
             }
-            ItemType.Contents.TYPE_GOODS_GRID -> {
+            ItemType.TYPE_GOODS_GRID -> {
                 _gridGoodsItem = itemList.toMutableList()
                 _gridGoodsUiItemList.value = uiDataList
             }
-            ItemType.Contents.TYPE_GOODS_SCROLL -> {
+            ItemType.TYPE_GOODS_SCROLL -> {
                 _scrollGoodsItem.value = itemList
                 _scrollGoodsHeader.value = header
             }
-            ItemType.Contents.TYPE_STYLE -> {
+            ItemType.TYPE_STYLE -> {
                 _styleItem = itemList.toMutableList()
                 _styleUiItemList.value = uiDataList
             }
@@ -111,13 +111,13 @@ class HomeViewModel @Inject constructor(
             }
         }
         return when (type) {
-            ItemType.Contents.TYPE_GOODS_SCROLL -> itemList
-            ItemType.Contents.TYPE_BANNER -> itemList
+            ItemType.TYPE_GOODS_SCROLL -> itemList
+            ItemType.TYPE_BANNER -> itemList
             else -> {
-                if (header != ItemType.Header.INITIAL_HEADER) {
+                if (header != ItemType.INITIAL_HEADER) {
                     itemList.add(0, header)
                 }
-                if (footer != ItemType.Footer.INITIAL_HEADER) {
+                if (footer != ItemType.INITIAL_FOOTER) {
                     itemList.add(footer)
                 }
                 itemList
@@ -130,10 +130,10 @@ class HomeViewModel @Inject constructor(
         dataList: List<ItemType>,
     ): List<ItemType> {
         val uiDataList = when (type) {
-            ItemType.Contents.TYPE_GOODS_GRID -> {
+            ItemType.TYPE_GOODS_GRID -> {
                 dataList.slice(INITIAL_COUNT..INITIAL_GRID_COUNT).toMutableList()
             }
-            ItemType.Contents.TYPE_STYLE -> {
+            ItemType.TYPE_STYLE -> {
                 dataList.slice(INITIAL_COUNT..INITIAL_STYLE_COUNT).toMutableList()
             }
             else -> return dataList
@@ -148,14 +148,14 @@ class HomeViewModel @Inject constructor(
         spanCount: Int,
     ) {
         when (type) {
-            ItemType.Contents.TYPE_GOODS_GRID -> {
+            ItemType.TYPE_GOODS_GRID -> {
                 makeExpandItemList(
                     _gridGoodsItem,
                     _gridGoodsUiItemList,
                     spanCount
                 )
             }
-            ItemType.Contents.TYPE_STYLE -> {
+            ItemType.TYPE_STYLE -> {
                 makeExpandItemList(
                     _styleItem,
                     _styleUiItemList,
@@ -213,14 +213,14 @@ class HomeViewModel @Inject constructor(
     ) {
         val pickNextCount = spanCount * 2
         when (type) {
-            ItemType.Contents.TYPE_GOODS_GRID -> {
+            ItemType.TYPE_GOODS_GRID -> {
                 makeRandomList(
                     _gridGoodsItem,
                     _gridGoodsUiItemList,
                     pickNextCount
                 )
             }
-            ItemType.Contents.TYPE_STYLE -> {
+            ItemType.TYPE_STYLE -> {
                 makeRandomList(
                     _styleItem,
                     _styleUiItemList,

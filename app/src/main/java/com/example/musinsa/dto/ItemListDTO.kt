@@ -88,49 +88,49 @@ fun ItemListDTO.toItemList(): List<Item> {
 
     this.data?.forEach { itemDTO ->
         val header =
-            itemDTO?.let { ItemType.Header.of(itemDTO.header) } ?: ItemType.Header.INITIAL_HEADER
+            itemDTO?.let { ItemType.headerOf(itemDTO.header) } ?: ItemType.INITIAL_HEADER
         val footer =
-            itemDTO?.let { ItemType.Footer.of(itemDTO.footer) } ?: ItemType.Footer.INITIAL_HEADER
+            itemDTO?.let { ItemType.footerOf(itemDTO.footer) } ?: ItemType.INITIAL_FOOTER
         val banners = mutableListOf<ItemType.Contents.Banner>()
         val goods = mutableListOf<ItemType.Contents.Goods>()
         val styles = mutableListOf<ItemType.Contents.Style>()
         var type = ""
         when (itemDTO?.contents?.type) {
-            ItemType.Contents.TYPE_BANNER -> {
-                type = ItemType.Contents.TYPE_BANNER
+            ItemType.TYPE_BANNER -> {
+                type = ItemType.TYPE_BANNER
                 itemDTO.contents.banners?.forEach { banner ->
                     if (banner != null) {
-                        banners.add(ItemType.Contents.Banner.of(banner))
+                        banners.add(ItemType.bannerOf(banner))
                     }
                 }
             }
-            ItemType.Contents.TYPE_GOODS_GRID -> {
-                type = ItemType.Contents.TYPE_GOODS_GRID
+            ItemType.TYPE_GOODS_GRID -> {
+                type = ItemType.TYPE_GOODS_GRID
                 itemDTO.contents.goods?.forEach { gridGoods ->
                     if (gridGoods != null) {
-                        goods.add(ItemType.Contents.Goods.of(
-                            ItemType.Contents.TYPE_GOODS_GRID,
+                        goods.add(ItemType.goodsOf(
+                            ItemType.TYPE_GOODS_GRID,
                             gridGoods)
                         )
                     }
                 }
             }
-            ItemType.Contents.TYPE_GOODS_SCROLL -> {
-                type = ItemType.Contents.TYPE_GOODS_SCROLL
+            ItemType.TYPE_GOODS_SCROLL -> {
+                type = ItemType.TYPE_GOODS_SCROLL
                 itemDTO.contents.goods?.forEach { scrollGoods ->
                     if (scrollGoods != null) {
-                        goods.add(ItemType.Contents.Goods.of(
-                            ItemType.Contents.TYPE_GOODS_SCROLL,
+                        goods.add(ItemType.goodsOf(
+                            ItemType.TYPE_GOODS_SCROLL,
                             scrollGoods)
                         )
                     }
                 }
             }
-            ItemType.Contents.TYPE_STYLE -> {
-                type = ItemType.Contents.TYPE_STYLE
+            ItemType.TYPE_STYLE -> {
+                type = ItemType.TYPE_STYLE
                 itemDTO.contents.styles?.forEach { style ->
                     if (style != null) {
-                        styles.add(ItemType.Contents.Style.of(style))
+                        styles.add(ItemType.styleOf(style))
                     }
                 }
             }

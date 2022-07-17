@@ -112,7 +112,7 @@ class CustomRecyclerViewAdapter(
         private val binding: ItemRecyclerFooterBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ItemType.Footer) {
-            binding.isRefresh = item.type == ItemType.Footer.REFRESH
+            binding.isRefresh = item.type == ItemType.REFRESH
             binding.btnMore.setOnClickListener {
                 expandUiCount(item.contentType, spanCount)
             }
