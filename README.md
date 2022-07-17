@@ -12,7 +12,7 @@
 ## 추가과제 구현
 
 ### 더 보기 누를시
-![mu_진짜 최종](https://user-images.githubusercontent.com/83396157/179382431-c2d4f4b6-c3c6-48c8-aa69-60cf230fd6c7.gif)
+![더보기_무신사](https://user-images.githubusercontent.com/83396157/179395545-ed708d68-e2e1-45ae-91c0-b5cd61e831f7.gif)
 ### 새로고침 누를시
 새로고침을 누를시는 실제 무신사앱을 참고하여 작성하였으며, 완전한 랜덤이 아닌 처음 보여준 화면의 데이터 다음 위치에 존재하는 데이터들을 가져오는식으로
 구성하였습니다. 이렇게 해야 모든 상품들을 고객에게 노출할 수 있을것이라 생각했기 때문입니다.
@@ -24,9 +24,9 @@
   - Retrofit2
 
 - JetPack
-  - 데이터 바인딩
-  - 뷰모델
-  - 라이프사이클
+  - DataBinding
+  - VeiwModel
+  - LifeCycle
 - DI
   - Hilt
 - 비동기 프로그래밍
@@ -34,7 +34,7 @@
 - 앱 브라우저
   - CustomChromeTab
 - 옵저버 패턴
-  - 라이브데이터 
+  - LiveData 
 ## Architecture - MVVM
 ![Image](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png?hl=ko)
 
