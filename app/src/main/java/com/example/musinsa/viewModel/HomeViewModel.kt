@@ -241,7 +241,9 @@ class HomeViewModel @Inject constructor(
         for (index in 0 until stopIndex - 1) {
             tempList.add(dataList[index])
         }
-        tempList.add(footer)
+        if (stopIndex != lastIndex) {
+            tempList.add(footer)
+        }
         uiDataList.value = tempList
     }
 
