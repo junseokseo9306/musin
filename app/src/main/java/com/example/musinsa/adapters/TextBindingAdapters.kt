@@ -13,42 +13,33 @@ import java.text.DecimalFormat
 fun setTitleLineSeparation(view: TextView, title: String?) {
     val blank = ' '
     val lineSeparator = '\n'
-    val maxLength = 6
-    var isChanged = false
-    val modifiedString = StringBuilder()
-    val nonNullTitle = title ?: ""
-    for (index in nonNullTitle.indices) {
-        if (!isChanged && index >= maxLength && nonNullTitle[index] == blank) {
-            modifiedString.append(lineSeparator)
-            isChanged = true
-        } else {
-            modifiedString.append(nonNullTitle[index])
+    val rawText = title ?: ""
+    val testList = rawText.split(blank)
+    val prettifiedText = buildString {
+        testList.forEachIndexed { index, text ->
+            append(text)
+            append(blank)
+            if (index == 1) {
+                append(lineSeparator)
+            }
         }
     }
-    view.text = modifiedString.toString()
+    view.text = prettifiedText
 }
 
 @BindingAdapter("headerTitle")
-fun setHeaderTitleSeparation(view: TextView, title: String?) {
-    val nonNullTitle = title ?: ""
-    val lineSeparatorChar = ':'
-    var separationIndex = 0
-    if (!nonNullTitle.contains(lineSeparatorChar)) {
-        view.text = nonNullTitle
+fun setHeaderTitleDependsOnLength(view: TextView, title: String?) {
+    val rawText = title ?: ""
+    if (rawText.length < 15) {
+        view.text = rawText
         return
     }
-    for (index in nonNullTitle.indices) {
-        val char = nonNullTitle[index]
-        if (char == lineSeparatorChar) {
-            separationIndex = index
-        }
-    }
     val spannableString = buildSpannedString {
-        append(nonNullTitle)
+        append(rawText)
         setSpan(
-            AbsoluteSizeSpan(24),
-            separationIndex,
-            nonNullTitle.length,
+            AbsoluteSizeSpan(13, true),
+            0,
+            rawText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
@@ -61,8 +52,8 @@ fun setPriceText(view: TextView, price: Int) {
     view.text = view.context.getString(R.string.currency, decimalFormat.format(price))
 }
 
-@BindingAdapter("colorText")
-fun setColorText(view: TextView, percentage: Int) {
+@BindingAdapter("colorPercent")
+fun setColorPercentageText(view: TextView, percentage: Int) {
     val percentMark = '%'
     val spannableString = buildSpannedString {
         append(percentage.toString())
