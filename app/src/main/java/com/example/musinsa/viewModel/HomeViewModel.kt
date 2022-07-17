@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.musinsa.common.CustomException
+import com.example.musinsa.model.CoroutineExceptionType
 import com.example.musinsa.model.Item.ItemType
 import com.example.musinsa.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,12 +38,19 @@ class HomeViewModel @Inject constructor(
     private val _indicator = MutableLiveData<String>()
     val indicator: LiveData<String> = _indicator
 
+    private val _error = MutableLiveData<CoroutineExceptionType>()
+    val error: LiveData<CoroutineExceptionType> = _error
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        _error.value = CustomException.check(throwable)
+    }
+
     init {
         loadDataFromServer()
     }
 
     private fun loadDataFromServer() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             val data = repository.getItemList()
             data.forEach { item ->
                 addDataToLiveData(
